@@ -1,27 +1,30 @@
 <?php
 // Include config file
 require_once "config.php";
- 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = $identification= $designation = "";
-$username_err = $password_err = $confirm_password_err = $identification_err = $designation_err = "";
+$name = $faculty_id = $password = $confirm_password= $designation = "";
+$dept_id = "";
+$name_err = $faculty_id_err = $password_err = $confirm_password_err = $designation_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
  
-    // Validate username
-    if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter a username.";
+    // Validate roll number
+    if(empty(trim($_POST["faculty_id"]))){
+        $roll_number_err = "Please enter the Faculty ID.";
     } else{
         // Prepare a select statement
-        $sql = "SELECT id FROM Users WHERE username = ?";
+        $sql = "SELECT Faculty_ID FROM Faculty WHERE Faculty_ID = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            mysqli_stmt_bind_param($stmt, "s", $param_faculty_id);
             
             // Set parameters
-            $param_username = trim($_POST["username"]);
+            $param_faculty_id = trim($_POST["faculty_id"]);
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -29,15 +32,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // mysqli_stmt_store_result($stmt);
                 mysqli_stmt_store_result($stmt);
                 if(mysqli_stmt_num_rows($stmt) == 1){
-                    $username_err = "This username is already taken.";
+                    $faculty_id_err = "This Faculty already exists in the database";
                 } else{
-                    $username = trim($_POST["username"]);
+                    $faculty_id = trim($_POST["faculty_id"]);
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
         }
-         
         // Close statement
         mysqli_stmt_close($stmt);
     }
@@ -52,10 +54,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Validate Identification Number
-    if(empty(trim($_POST["identification"]))){
-        $identification_err = "Please enter the identification number.";
+    if(empty(trim($_POST["name"]))){
+        $name_err = "Please enter the name of the student.";
     } else{
-        $identification = trim($_POST["identification"]);
+        $name = trim($_POST["name"]);
+    }
+
+    if(empty(trim($_POST["dept_id"]))){
+        // $designation_err = "Please enter the designation.";
+    } else{
+        $dept_id = trim($_POST["dept_id"]);
     }
 
     if(empty(trim($_POST["designation"]))){
@@ -75,28 +83,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Check input errors before inserting in database
-    if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty(
-        $identification_err) && empty($designation_err)){
+    if(empty($name_err) && empty($password_err) && empty($confirm_password_err) && empty(
+        $faculty_id_err) && empty($designation_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO Users (username, password, identification, designation) VALUES (?, ?, ?, ?)";
-         
+        $sql = "INSERT INTO Faculty (Faculty_ID, password, Name, Dept_ID, Designation ) VALUES (?, ?, ?, ?, ?)";
+        // if(mysqli_prepare($link, $sql)){
+        //         header("location: index.php");
+        // } else{
+        //     echo "Something went wrong. Please try again later.".mysqli_error($link);
+        // }
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssss", $param_username, $param_password, $param_identification, $param_designation);
+            mysqli_stmt_bind_param($stmt, "sssss", $param_faculty_id, $param_password, $param_name, $param_dept_id, $param_designation);
             
             // Set parameters
-            $param_username = $username;
+            $param_faculty_id = $faculty_id;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-            $param_identification = $identification;
+            $param_name = $name;
+            $param_dept_id = $dept_id;
             $param_designation = $designation;
             // mysqli_stmt_execute($stmt);
             // Attempt to execute the prepared statement
+            // echo mysqli_stmt_execute($stmt), "fgh";
+            // echo "safe";
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
+                // echo "heckk";
                 header("location: index.php");
             } else{
-                echo "Something went wrong. Please try again later.";
+                echo "Something went wrong. Please try again later.".mysqli_error($link);
             }
         }
          
@@ -113,7 +129,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up</title>
+    <title>Faculty Adding</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ font: 14px sans-serif; }
@@ -122,31 +138,48 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
     <div class="wrapper">
-        <h2>Sign Up</h2>
+        <h2>Sign Up for Faculty</h2>
         <p>Please fill this form to create an account.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
+            <div class="form-group <?php echo (!empty($faculty_id_err)) ? 'has-error' : ''; ?>">
+                <label>Faculty ID</label>
+                <input type="text" name="faculty_id" class="form-control" value="<?php echo $faculty_id; ?>">
+                <span class="help-block"><?php echo $faculty_id_err; ?></span>
             </div>
-            <div class="form-group <?php echo (!empty($identification_err)) ? 'has-error' : ''; ?>">
-                <label>Identification Number</label>
-                <input type="text" name="identification" class="form-control" value="<?php echo $identification; ?>">
-                <span class="help-block"><?php echo $identification_err; ?></span>
+            <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
+                <span class="help-block"><?php echo $name_err; ?></span>
             </div>
-
             <div class="form-group <?php echo (!empty($designation_err)) ? 'has-error' : ''; ?>">
                 <label>Designation</label>
                 <!-- <input type="text" name="designation" class="form-control" value="<?php echo $designation; ?>"> -->
                 <select name = "designation" class="form-control" value="<?php echo $designation; ?>">
-                    <option value=1>Student</option>
-                    <option value="Faculty">Faculty</option>
-                    <option value="Admin">Admin</option>
+                    <option value="Associate Processor">Associate Professor</option>
+                    <option value="Assistant Professor">Assistant Professor</option>
+                    <option value="Professor">Professor</option>
                 </select>
                 <span class="help-block"><?php echo $designation_err; ?></span>
             </div>
-
+            <div class="form-group">
+                <label>Department</label>
+                <select name = "dept_id" class="form-control" value="<?php echo $dept_id; ?>">
+                    <option value="AE">Aerospace Engineering</option>
+                    <option value="BSBE">Biological Sciences & Bioengineering</option>
+                    <option value="CHE">Chemical Engineering</option>
+                    <option value="CE">Civil Engineering</option>
+                    <option value="CSE">Computer Science & Engineering</option>
+                    <option value="EE">Electrical Engineering</option>
+                    <option value="MSE">Materials Science & Engineering</option>
+                    <option value="ME">Mechanical Engineeringg</option>
+                    <option value="IME">Industrial & Management Engineering</option>
+                    <option value="CHM">BS Chemistry</option>
+                    <option value="PHY">BS Physics</option>
+                    <option value="MTH">BS Maths</option>
+                    <option value="ECO">BS Economics</option>
+                    <option value="ES">Earth Sciences</option>
+                </select>
+            </div>
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                 <label>Password</label>
                 <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">

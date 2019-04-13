@@ -3,8 +3,8 @@
 require_once "config.php";
  
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = $identification= $designation = "";
-$username_err = $password_err = $confirm_password_err = $identification_err = $designation_err = "";
+$username = $password = $confirm_password = $name = "";
+$username_err = $password_err = $confirm_password_err = $name_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -14,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $username_err = "Please enter a username.";
     } else{
         // Prepare a select statement
-        $sql = "SELECT id FROM Users WHERE username = ?";
+        $sql = "SELECT username FROM System_Admin WHERE username = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -51,17 +51,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $password = trim($_POST["password"]);
     }
 
-    // Validate Identification Number
-    if(empty(trim($_POST["identification"]))){
-        $identification_err = "Please enter the identification number.";
+    if(empty(trim($_POST["name"]))){
+        $name_err = "Please enter the name of the student.";
     } else{
-        $identification = trim($_POST["identification"]);
-    }
-
-    if(empty(trim($_POST["designation"]))){
-        $designation_err = "Please enter the designation.";
-    } else{
-        $designation = trim($_POST["designation"]);
+        $name = trim($_POST["name"]);
     }
 
     // Validate confirm password
@@ -75,35 +68,32 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Check input errors before inserting in database
-    if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty(
-        $identification_err) && empty($designation_err)){
+    if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($name_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO Users (username, password, identification, designation) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO System_Admin (username, password, Name) VALUES (?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssss", $param_username, $param_password, $param_identification, $param_designation);
+            mysqli_stmt_bind_param($stmt, "sss", $param_username, $param_password, $param_name);
             
             // Set parameters
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-            $param_identification = $identification;
-            $param_designation = $designation;
+            $param_name = $name;
             // mysqli_stmt_execute($stmt);
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
                 header("location: index.php");
             } else{
-                echo "Something went wrong. Please try again later.";
+                echo "Something went wrong. Please try again later.".mysqli_error($link);
             }
         }
          
         // Close statement
         mysqli_stmt_close($stmt);
     }
-    
     // Close connection
     mysqli_close($link);
 }
@@ -113,7 +103,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up</title>
+    <title>Admin Adding</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ font: 14px sans-serif; }
@@ -130,23 +120,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
                 <span class="help-block"><?php echo $username_err; ?></span>
             </div>
-            <div class="form-group <?php echo (!empty($identification_err)) ? 'has-error' : ''; ?>">
-                <label>Identification Number</label>
-                <input type="text" name="identification" class="form-control" value="<?php echo $identification; ?>">
-                <span class="help-block"><?php echo $identification_err; ?></span>
+            <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
+                <span class="help-block"><?php echo $name_err; ?></span>
             </div>
-
-            <div class="form-group <?php echo (!empty($designation_err)) ? 'has-error' : ''; ?>">
-                <label>Designation</label>
-                <!-- <input type="text" name="designation" class="form-control" value="<?php echo $designation; ?>"> -->
-                <select name = "designation" class="form-control" value="<?php echo $designation; ?>">
-                    <option value=1>Student</option>
-                    <option value="Faculty">Faculty</option>
-                    <option value="Admin">Admin</option>
-                </select>
-                <span class="help-block"><?php echo $designation_err; ?></span>
-            </div>
-
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                 <label>Password</label>
                 <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
