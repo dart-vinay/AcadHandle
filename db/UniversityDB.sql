@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.25, for Linux (x86_64)
 --
--- Host: localhost    Database: University
+-- Host: localhost    Database: UniversityDB
 -- ------------------------------------------------------
 -- Server version	5.7.25-0ubuntu0.16.04.2
 
@@ -98,6 +98,7 @@ CREATE TABLE `Department` (
 
 LOCK TABLES `Department` WRITE;
 /*!40000 ALTER TABLE `Department` DISABLE KEYS */;
+INSERT INTO `Department` VALUES ('AE','Aerospace Engineering');
 /*!40000 ALTER TABLE `Department` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,6 +142,7 @@ CREATE TABLE `Faculty` (
   `Name` varchar(50) NOT NULL,
   `Dept_ID` varchar(10) NOT NULL,
   `Designation` varchar(20) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Faculty_ID`),
   KEY `Dept_ID` (`Dept_ID`),
   CONSTRAINT `Faculty_ibfk_1` FOREIGN KEY (`Dept_ID`) REFERENCES `Department` (`Dept_ID`)
@@ -153,6 +155,7 @@ CREATE TABLE `Faculty` (
 
 LOCK TABLES `Faculty` WRITE;
 /*!40000 ALTER TABLE `Faculty` DISABLE KEYS */;
+INSERT INTO `Faculty` VALUES ('11563','P Nambodiri','AE','Assistant Professor','$2y$10$QYR6LZzZ4A4m2dlOgfvCou3h6HEEtygx9vHohTPFY0gDGJ4al8Dme'),('12345','Arnub','AE',NULL,'$2y$10$e24ESKh39r5c1bQ0MtGcweyvlHXXJfdvqmsKgb7KOC4vVlfJeyray'),('15642','P Nambodiri','AE',NULL,'$2y$10$5wqaREr8touLtwAq/G8KAOWt7jaZ1oO2G1VavIIm8aWdGSs3Kkv.6');
 /*!40000 ALTER TABLE `Faculty` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,6 +238,7 @@ CREATE TABLE `Program` (
 
 LOCK TABLES `Program` WRITE;
 /*!40000 ALTER TABLE `Program` DISABLE KEYS */;
+INSERT INTO `Program` VALUES ('B.Tech','Bachelor of Technology');
 /*!40000 ALTER TABLE `Program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -321,7 +325,33 @@ CREATE TABLE `Student` (
 
 LOCK TABLES `Student` WRITE;
 /*!40000 ALTER TABLE `Student` DISABLE KEYS */;
+INSERT INTO `Student` VALUES ('150321','Vinay Kumar','AE','B.Tech',NULL,NULL,'$2y$10$U3aBAZPpWKDW5uAeHb/breD3mfJuKYgUC5v9LqKRdHi358oQAe2TW'),('150801','Vinay','AE','B.Tech',NULL,NULL,'$2y$10$KC973XfB4/5ROVcy/L9QSOi4vdKCBypMuyQVZ6sTA/M7xNbh1hLUq');
 /*!40000 ALTER TABLE `Student` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `System_Admin`
+--
+
+DROP TABLE IF EXISTS `System_Admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `System_Admin` (
+  `username` varchar(25) NOT NULL,
+  `Name` varchar(30) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `System_Admin`
+--
+
+LOCK TABLES `System_Admin` WRITE;
+/*!40000 ALTER TABLE `System_Admin` DISABLE KEYS */;
+INSERT INTO `System_Admin` VALUES ('heck','Desig','$2y$10$VcBa5Yb9wA3DFIiScKWnruVFw3W2ZE2atW1Q1ts3nao91gXFkrGiu');
+/*!40000 ALTER TABLE `System_Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -358,3 +388,14 @@ LOCK TABLES `Thesis` WRITE;
 /*!40000 ALTER TABLE `Thesis` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Thesis` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-04-14 14:59:03
