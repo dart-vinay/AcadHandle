@@ -28,5 +28,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
         <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
     </p>
     <p>Want to add a new account <a href="signup.php">Click here</a>.</p>
+    <p>To add a new Department <a href="add_department.php">Click here</a>.</p>
+    <p>To add a new Program <a href="add_program.php">Click here</a>.</p>
+    <p>Add degree requirements of a Program <a href="add_degree_requirements.php">here</a>.</p>
 </body>
 </html>
