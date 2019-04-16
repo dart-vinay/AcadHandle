@@ -16,6 +16,61 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `Book`
+--
+
+DROP TABLE IF EXISTS `Book`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Book` (
+  `Book_ID` varchar(25) NOT NULL,
+  `Title` varchar(50) DEFAULT NULL,
+  `Author` varchar(35) DEFAULT NULL,
+  PRIMARY KEY (`Book_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Book`
+--
+
+LOCK TABLES `Book` WRITE;
+/*!40000 ALTER TABLE `Book` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Book` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Complaint`
+--
+
+DROP TABLE IF EXISTS `Complaint`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Complaint` (
+  `Complaint_ID` varchar(15) DEFAULT NULL,
+  `Lodged_By` varchar(25) DEFAULT NULL,
+  `Lodger_designation` varchar(25) DEFAULT NULL,
+  `Description` varchar(150) DEFAULT NULL,
+  `Status` varchar(25) DEFAULT NULL,
+  `Lodge_Date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `Handler` varchar(25) DEFAULT NULL,
+  `Location` varchar(25) DEFAULT NULL,
+  `Lodger_Contact` varchar(20) DEFAULT NULL,
+  KEY `Handler` (`Handler`),
+  CONSTRAINT `Complaint_ibfk_1` FOREIGN KEY (`Handler`) REFERENCES `Staff` (`Staff_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Complaint`
+--
+
+LOCK TABLES `Complaint` WRITE;
+/*!40000 ALTER TABLE `Complaint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Complaint` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Course`
 --
 
@@ -39,7 +94,34 @@ CREATE TABLE `Course` (
 
 LOCK TABLES `Course` WRITE;
 /*!40000 ALTER TABLE `Course` DISABLE KEYS */;
+INSERT INTO `Course` VALUES ('CS315','DBMS','AE',9);
 /*!40000 ALTER TABLE `Course` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Course_Bucket`
+--
+
+DROP TABLE IF EXISTS `Course_Bucket`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Course_Bucket` (
+  `Student_ID` varchar(20) NOT NULL,
+  `Offering_ID` int(11) NOT NULL,
+  PRIMARY KEY (`Student_ID`,`Offering_ID`),
+  KEY `Offering_ID` (`Offering_ID`),
+  CONSTRAINT `Course_Bucket_ibfk_1` FOREIGN KEY (`Student_ID`) REFERENCES `Student` (`Roll_Number`),
+  CONSTRAINT `Course_Bucket_ibfk_2` FOREIGN KEY (`Offering_ID`) REFERENCES `Offering` (`Offering_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Course_Bucket`
+--
+
+LOCK TABLES `Course_Bucket` WRITE;
+/*!40000 ALTER TABLE `Course_Bucket` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Course_Bucket` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -160,6 +242,87 @@ INSERT INTO `Faculty` VALUES ('11563','P Nambodiri','AE','Assistant Professor','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Hostel`
+--
+
+DROP TABLE IF EXISTS `Hostel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Hostel` (
+  `Hall_Number` varchar(10) NOT NULL,
+  `Warden_Incharge` varchar(25) NOT NULL,
+  PRIMARY KEY (`Hall_Number`,`Warden_Incharge`),
+  KEY `Warden_Incharge` (`Warden_Incharge`),
+  CONSTRAINT `Hostel_ibfk_1` FOREIGN KEY (`Warden_Incharge`) REFERENCES `Faculty` (`Faculty_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Hostel`
+--
+
+LOCK TABLES `Hostel` WRITE;
+/*!40000 ALTER TABLE `Hostel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Hostel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `IssueBook`
+--
+
+DROP TABLE IF EXISTS `IssueBook`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `IssueBook` (
+  `ID` int(11) NOT NULL,
+  `Book_ID` varchar(25) DEFAULT NULL,
+  `Issued_To` varchar(25) DEFAULT NULL,
+  `Issuer_Identity` varchar(20) DEFAULT NULL,
+  `Issue_Date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `Due_Date` datetime DEFAULT NULL,
+  `Return_Date` datetime DEFAULT NULL,
+  `Penalty` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `Book_ID` (`Book_ID`),
+  CONSTRAINT `IssueBook_ibfk_1` FOREIGN KEY (`Book_ID`) REFERENCES `Book` (`Book_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `IssueBook`
+--
+
+LOCK TABLES `IssueBook` WRITE;
+/*!40000 ALTER TABLE `IssueBook` DISABLE KEYS */;
+/*!40000 ALTER TABLE `IssueBook` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Lost_N_Found`
+--
+
+DROP TABLE IF EXISTS `Lost_N_Found`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Lost_N_Found` (
+  `ID` int(11) NOT NULL,
+  `Lost_Or_Found` varchar(20) DEFAULT NULL,
+  `Person_Involved` varchar(30) DEFAULT NULL,
+  `Description` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Lost_N_Found`
+--
+
+LOCK TABLES `Lost_N_Found` WRITE;
+/*!40000 ALTER TABLE `Lost_N_Found` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Lost_N_Found` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Offering`
 --
 
@@ -172,7 +335,7 @@ CREATE TABLE `Offering` (
   `Faculty_ID` varchar(25) NOT NULL,
   `Modular` int(11) DEFAULT '0',
   `Sem_ID` int(11) DEFAULT NULL,
-  `Year` int(11) NOT NULL,
+  `Slot` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`Offering_ID`),
   KEY `Sem_ID` (`Sem_ID`),
   KEY `Course_ID` (`Course_ID`),
@@ -180,7 +343,7 @@ CREATE TABLE `Offering` (
   CONSTRAINT `Offering_ibfk_1` FOREIGN KEY (`Sem_ID`) REFERENCES `Semester` (`Sem_ID`),
   CONSTRAINT `Offering_ibfk_2` FOREIGN KEY (`Course_ID`) REFERENCES `Course` (`Course_No`),
   CONSTRAINT `Offering_ibfk_3` FOREIGN KEY (`Faculty_ID`) REFERENCES `Faculty` (`Faculty_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,6 +352,7 @@ CREATE TABLE `Offering` (
 
 LOCK TABLES `Offering` WRITE;
 /*!40000 ALTER TABLE `Offering` DISABLE KEYS */;
+INSERT INTO `Offering` VALUES (2,'CS315','12345',0,1,NULL);
 /*!40000 ALTER TABLE `Offering` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,7 +457,32 @@ CREATE TABLE `Semester` (
 
 LOCK TABLES `Semester` WRITE;
 /*!40000 ALTER TABLE `Semester` DISABLE KEYS */;
+INSERT INTO `Semester` VALUES (1,2019,2);
 /*!40000 ALTER TABLE `Semester` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Staff`
+--
+
+DROP TABLE IF EXISTS `Staff`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Staff` (
+  `Staff_ID` varchar(25) NOT NULL,
+  `Name` varchar(35) DEFAULT NULL,
+  `Designation` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`Staff_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Staff`
+--
+
+LOCK TABLES `Staff` WRITE;
+/*!40000 ALTER TABLE `Staff` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Staff` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -311,6 +500,7 @@ CREATE TABLE `Student` (
   `CPI` decimal(10,0) DEFAULT NULL,
   `DOB` date DEFAULT NULL,
   `password` varchar(255) NOT NULL,
+  `Hall_Number` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`Roll_Number`),
   KEY `Dept_ID` (`Dept_ID`),
   KEY `Prog_ID` (`Prog_ID`),
@@ -325,7 +515,7 @@ CREATE TABLE `Student` (
 
 LOCK TABLES `Student` WRITE;
 /*!40000 ALTER TABLE `Student` DISABLE KEYS */;
-INSERT INTO `Student` VALUES ('150321','Vinay Kumar','AE','B.Tech',NULL,NULL,'$2y$10$U3aBAZPpWKDW5uAeHb/breD3mfJuKYgUC5v9LqKRdHi358oQAe2TW'),('150801','Vinay','AE','B.Tech',NULL,NULL,'$2y$10$KC973XfB4/5ROVcy/L9QSOi4vdKCBypMuyQVZ6sTA/M7xNbh1hLUq');
+INSERT INTO `Student` VALUES ('150321','Vinay Kumar','AE','B.Tech',NULL,NULL,'$2y$10$U3aBAZPpWKDW5uAeHb/breD3mfJuKYgUC5v9LqKRdHi358oQAe2TW',NULL),('150456','Bishal','AE','B.Tech',NULL,NULL,'$2y$10$P5pRMTk5PscYCRqaZEyzNuyKGk3PNY4uSdYHbO6MTfYxG.iaq5BH2',NULL),('150801','Vinay','AE','B.Tech',NULL,NULL,'$2y$10$KC973XfB4/5ROVcy/L9QSOi4vdKCBypMuyQVZ6sTA/M7xNbh1hLUq',NULL);
 /*!40000 ALTER TABLE `Student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -352,6 +542,29 @@ LOCK TABLES `System_Admin` WRITE;
 /*!40000 ALTER TABLE `System_Admin` DISABLE KEYS */;
 INSERT INTO `System_Admin` VALUES ('heck','Desig','$2y$10$VcBa5Yb9wA3DFIiScKWnruVFw3W2ZE2atW1Q1ts3nao91gXFkrGiu');
 /*!40000 ALTER TABLE `System_Admin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `TA_Ship`
+--
+
+DROP TABLE IF EXISTS `TA_Ship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TA_Ship` (
+  `Offering_ID` int(11) NOT NULL,
+  `Roll_Number` varchar(25) NOT NULL,
+  PRIMARY KEY (`Offering_ID`,`Roll_Number`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `TA_Ship`
+--
+
+LOCK TABLES `TA_Ship` WRITE;
+/*!40000 ALTER TABLE `TA_Ship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `TA_Ship` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -398,4 +611,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-14 14:59:03
+-- Dump completed on 2019-04-16 16:45:40
