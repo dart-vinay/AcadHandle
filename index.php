@@ -57,7 +57,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // echo 
     if(empty($username_err) && empty($password_err) && empty($designation_err)){
         // Prepare a select statement
-        echo "heck";
         if($designation == "Student"){
             $sql = "SELECT Roll_Number, password FROM Student WHERE Roll_Number = ?";
         }
