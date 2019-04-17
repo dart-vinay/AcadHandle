@@ -17,8 +17,10 @@ $new_password_err = $confirm_password_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
+    
     // Validate new password
+    $designation = $_SESSION["logged_in_as"];
+    $id = $_SESSION["username"];
     if(empty(trim($_POST["new_password"]))){
         $new_password_err = "Please enter the new password.";     
     } elseif(strlen(trim($_POST["new_password"])) < 6){
@@ -40,15 +42,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before updating the database
     if(empty($new_password_err) && empty($confirm_password_err)){
         // Prepare an update statement
-        $sql = "UPDATE users SET password = ? WHERE id = ?";
+        $sql="";
+        if($designation == "Student"){
+            $sql = "UPDATE Student SET password = ? WHERE Roll_Number = ?";
+        }
+        elseif($designation == "Faculty"){
+            $sql = "UPDATE Faculty SET password = ? WHERE Faculty_ID = ?";
+        }
+        elseif($designation == "System_Admin"){
+            $sql = "UPDATE System_Admin SET password = ? WHERE username = ?";
+        }
+        else{
+            echo "An unexpecterd error has occured";
+        }
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "si", $param_password, $param_id);
+            mysqli_stmt_bind_param($stmt, "ss", $param_password, $param_id);
             
             // Set parameters
             $param_password = password_hash($new_password, PASSWORD_DEFAULT);
-            $param_id = $_SESSION["id"];
+            $param_id = $_SESSION["username"];
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){

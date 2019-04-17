@@ -85,7 +85,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                         echo "<td class = 'text-center'>" . $row['Credits'] . "</td>";
                         echo "<td class = 'text-center'>" . $row['Slot'] . "</td>";
                         echo "<td class = 'text-center'>" . $row_faculty['Name'] ."</td>";
-                        echo "<td class = 'text-center'>","<form method='form'>";
+                        echo "<td class = 'text-center'>","<form method='post'>";
                             echo "<input type='submit', class = 'btn btn-success', name='test'/>";
                             echo "<input type='hidden' name='offering_id' value=$offering_id>";
                             echo "<input type='hidden' name='student_id' value=$student_id>";
