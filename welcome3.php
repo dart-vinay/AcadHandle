@@ -31,5 +31,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     <p>To add a new Department <a href="add_department.php">Click here</a>.</p>
     <p>To add a new Program <a href="add_program.php">Click here</a>.</p>
     <p>Add degree requirements of a Program <a href="add_degree_requirements.php">here</a>.</p>
+    <p>Add a new Course <a href="add_course.php">Click here</a>.</p>
 </body>
 </html>

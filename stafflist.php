@@ -11,28 +11,32 @@
 <body>
     <div class = "container">
         <?php
-        $number = $warden = "";
-        $row['Hall_Number'] = "";  
-        $row['Warden_Incharge'] = "";  
+        $staffid = $name = $desig = "";
+        $row['Staff_ID'] = "";  
+        $row['Name'] = "";  
+        $row['Designation']= "";
         require_once('config.php');
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
-        $sql = "SELECT * FROM Hostel ";
+        $sql = "SELECT * FROM Staff ";
         if($result = mysqli_query($link, $sql)){
             if(mysqli_num_rows($result) > 0){
                 echo "<table class='table table-stripped'>";
                     echo "<tr>";
-                        echo "<th class ='text-center'>Hall of Residence</th>";
-                        echo "<th class ='text-center'>Warden</th>";
+                        echo "<th class ='text-center'>Staff ID</th>";
+                        echo "<th class ='text-center'>Name</th>";
+                        echo "<th class ='text-center'>Designation</th>";
                     echo "</tr>";
                 while($row = mysqli_fetch_array($result)){
                     // echo gettype($row);
-                    $number = $row['Hall_Number'];
-                    $warden = $row['Warden_Incharge'];
+                    $staffid = $row['Staff_ID'];
+                    $name = $row['Name'];
+                    $desig = $row['Designation'];
                     echo "<tr>";
-                        echo "<td>" . $number . "</td>";
-                        echo "<td>" . $warden . "</td>";
+                        echo "<td>" . $staffid . "</td>";
+                        echo "<td>" . $name . "</td>";
+                        echo "<td>" . $desig . "</td>";
                     echo "</tr>";
                 }
                 // echo "</table>";
