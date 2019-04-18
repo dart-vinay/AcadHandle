@@ -37,5 +37,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 
     <p><a href="faculty_mycourses.php">My Courses</a>.</p>
     <p>Want to access library <a href="library.php">Click here</a>.</p>
+    <p><a href="my_complaints.php">My Complaints</a>.</p>
 </body>
 </html>

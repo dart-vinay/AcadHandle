@@ -22,7 +22,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
         } else{
               echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
         }
-        
     }
 ?>
 

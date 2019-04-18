@@ -5,8 +5,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 // Define variables and initialize with empty values
-$name = $id = "";
-$name_err = $id_err = "";
+$name = $id = $desig = "";
+$name_err = $id_err = $desig_err = "";
+ 
 
 // Initialize the session
 session_start();
@@ -22,10 +23,10 @@ else{
      
         // Validate roll number
         if(empty(trim($_POST["id"]))){
-            $id_err = "Please enter the Department ID.";
+            $id_err = "Please enter Staff's ID.";
         } else{
             // Prepare a select statement
-            $sql = "SELECT Dept_ID FROM Department WHERE Dept_ID = ?";
+            $sql = "SELECT Staff_ID FROM Staff WHERE Staff_ID = ?";
             
             if($stmt = mysqli_prepare($link, $sql)){
                 // Bind variables to the prepared statement as parameters
@@ -40,7 +41,7 @@ else{
                     // mysqli_stmt_store_result($stmt);
                     mysqli_stmt_store_result($stmt);
                     if(mysqli_stmt_num_rows($stmt) == 1){
-                        $id_err = "This Department already exists in the database";
+                        $id_err = "This Staff member already exists in the database";
                     } else{
                         $id = trim($_POST["id"]);
                     }
@@ -53,15 +54,20 @@ else{
         }
         
         if(empty(trim($_POST["name"]))){
-            $name_err = "Please enter the Department name.";
+            $name_err = "Please enter the Staff's name.";
         } else{
             $name = trim($_POST["name"]);
         }
+         if(empty(trim($_POST["desig"]))){
+            $desig_err = "Please enter the Staff's designation.";
+        } else{
+            $desig = trim($_POST["desig"]);
+        }
 
-        if(empty($name_err) && empty($id_err)){
+        if(empty($name_err) && empty($id_err) && empty($desig_err)){
             
             // Prepare an insert statement
-            $sql = "INSERT INTO Department (Dept_ID, Dept_Name) VALUES (?, ?)";
+            $sql = "INSERT INTO Staff (Staff_ID, Name, Designation) VALUES (?, ?, ?)";
             // if(mysqli_prepare($link, $sql)){
             //         header("location: index.php");
             // } else{
@@ -69,11 +75,12 @@ else{
             // }
             if($stmt = mysqli_prepare($link, $sql)){
                 // Bind variables to the prepared statement as parameters
-                mysqli_stmt_bind_param($stmt, "ss", $param_id, $param_name);
+                mysqli_stmt_bind_param($stmt, "sss", $param_id, $param_name, $param_desig);
                 
                 // Set parameters
                 $param_id = $id;
                 $param_name = $name;
+                $param_desig = $desig;
                 if(mysqli_stmt_execute($stmt)){
                     // Redirect to login page
                     // echo "heckk";
@@ -98,7 +105,7 @@ else{
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Adding</title>
+    <title>Staff Adding</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ font: 14px sans-serif; }
@@ -106,28 +113,23 @@ else{
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-      <div class="navbar-header">
-          <a class="navbar-brand" href="#">University Management</a>
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-        <li><a href="logout.php">Sign Out</a></li>
-        </ul>
-      </div>
-    </nav>
     <div class="wrapper">
-        <h2>Add a Department</h2>
+        <h2>Add a Staff member</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($id_err)) ? 'has-error' : ''; ?>">
-                <label>Dept ID</label>
+                <label>Staff ID</label>
                 <input type="text" name="id" class="form-control" value="<?php echo $id; ?>">
                 <span class="help-block"><?php echo $id_err; ?></span>
             </div>
             <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
-                <label>Dept Name</label>
+                <label>Name</label>
                 <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
                 <span class="help-block"><?php echo $name_err; ?></span>
+            </div>
+            <div class="form-group <?php echo (!empty($desig_err)) ? 'has-error' : ''; ?>">
+                <label>Designation</label>
+                <input type="text" name="desig" class="form-control" value="<?php echo $desig; ?>">
+                <span class="help-block"><?php echo $desig_err; ?></span>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit">
