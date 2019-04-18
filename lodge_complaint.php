@@ -6,8 +6,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 // Define variables and initialize with empty values
 $name = $desig = $desc = $loc = $contact = "";
-$status = "Pending";
-$handler = "143";
+$handler = "123";
 $name_err = $desig_err = $desc_err = $loc_err = $contact_err = $status_err = $handler_err = "";
 
 // Initialize the session
@@ -24,11 +23,6 @@ else{
             $name_err = "Please enter your name.";
         } else{
             $name = trim($_POST["name"]);
-        }
-        if(empty(trim($_POST["desig"]))){
-            $desig_err = "Please enter your Designation.";
-        } else{
-            $desig = trim($_POST["desig"]);
         }
         if(empty(trim($_POST["desc"]))){
             $desc_err = "Please enter Complaint Description.";
@@ -60,9 +54,9 @@ else{
                 
                 // Set parameters
                 $param_name = $_SESSION['username'];
-                $param_desig = $desig;
+                $param_desig = $_SESSION['logged_in_as'];
                 $param_desc = $desc;
-                $param_status = $status;
+                $param_status = "Pending";
                 $param_handler = $handler;
                 $param_loc = $loc;
                 $param_contact = $contact;
@@ -117,22 +111,10 @@ else{
                 <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
                 <span class="help-block"><?php echo $name_err; ?></span>
             </div>
-            <div class="form-group">
-                <label>Designation</label>
-                <select name = "desig" class="form-control" value="<?php echo $desig; ?>">
-                    <option value="Student">Student</option>
-                    <option value="Faculty">Faculty</option>
-                </select>
-            </div>
             <div class="form-group <?php echo (!empty($desc_err)) ? 'has-error' : ''; ?>">
                 <label>Description</label>
                 <input type="text" name="desc" class="form-control" value="<?php echo $desc; ?>">
                 <span class="help-block"><?php echo $desc_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($status_err)) ? 'has-error' : ''; ?>">
-                <label>Status</label>
-                <input type="text" name="status" class="form-control" value="<?php echo $status; ?>">
-                <span class="help-block"><?php echo $status_err; ?></span>
             </div>
             <div class="form-group <?php echo (!empty($handler_err)) ? 'has-error' : ''; ?>">
                 <label>Handler</label>

@@ -66,7 +66,7 @@ else{
                 if(mysqli_stmt_execute($stmt)){
                     header("location: index.php");
                 } else{
-                    echo "Something went wrong. Please try again later.".mysqli_error($link);
+                    echo "Course already exists in the offering table".mysqli_error($link);
                 }
 
             }
@@ -116,7 +116,6 @@ else{
                 // echo "fsggfdg";
                 if($result = mysqli_query($link, $sql)){
                     if(mysqli_num_rows($result) > 0){
-                        echo "fsggfdg";
                         echo "<select name = 'coursecode' class='form-control'>";
                         while($row = mysqli_fetch_array($result)){
                             $coursecode = $row['Course_No'];
