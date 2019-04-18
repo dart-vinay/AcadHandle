@@ -13,6 +13,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     {
         $student_id = $_REQUEST['student_id'];
         $offering_id = $_REQUEST['offering_id'];
+        $course_type = $_REQUEST['course_type'];
         $sql1 = "Select * from Course_Bucket where Student_ID=$student_id and Offering_ID=$offering_id";
         $sql2 = "Select * from Enrollment where Roll_Number=$student_id and Offering_ID=$offering_id";
         $error_occured = 0;
@@ -29,7 +30,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
             }
         }
         if ($error_occured==0){
-            $sql = "Insert into Course_Bucket values($student_id, $offering_id)";
+            $sql = "Insert into Course_Bucket values($student_id, $offering_id,'$course_type')";
             if(mysqli_query($link, $sql)){
                 echo "Course request successful";
             } else{
@@ -53,6 +54,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#">University Management</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+        <li><a href="logout.php">Sign Out</a></li>
+        </ul>
+      </div>
+    </nav>
     <div class="wrapper">
     <h1> Courses offered this Semester</h1><br>
     <?php
@@ -68,6 +79,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                     echo "<th class = 'text-center'>Credits </th>";
                     echo "<th class = 'text-center'>Course Slot </th>";
                     echo "<th class = 'text-center'>Faculty </th>";
+                    echo "<th class = 'text-center'>Course_type </th>";
                     echo "<th class = 'text-center'>Request </th>";
 
                 echo "</tr>";
@@ -78,17 +90,28 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                     $sql2  = "Select Name from Faculty where Faculty_ID=$faculty_name";
                     $result_faculty = mysqli_query($link, $sql2);
                     $row_faculty = mysqli_fetch_array($result_faculty);
-
                     echo "<tr>";
                         echo "<td class = 'text-center'>" . $row['Dept_ID'] . "</td>";
                         echo "<td class = 'text-center'>" . $row['Title'] . "</td>";
                         echo "<td class = 'text-center'>" . $row['Credits'] . "</td>";
                         echo "<td class = 'text-center'>" . $row['Slot'] . "</td>";
                         echo "<td class = 'text-center'>" . $row_faculty['Name'] ."</td>";
-                        echo "<td class = 'text-center'>","<form method='post'>";
+                        echo "<form method='post'>";
+                            echo "<td class = 'text-center'>", "<select name = 'course_type' class='form-control'>";
+                                echo "<option value=OE>OE</option>";
+                                echo "<option value=DE>DE</option>";
+                                echo "<option value=DC>DC</option>";
+                                echo "<option value=ESO>ESO</option>";
+                                echo "<option value=UGP>UGP</option>";
+                                echo "<option value=IC>IC</option>";
+                            echo "</select>";
+                            echo "</td>";
+                            echo "<td class = 'text-center'>";
                             echo "<input type='submit', class = 'btn btn-success', name='test'/>";
                             echo "<input type='hidden' name='offering_id' value=$offering_id>";
                             echo "<input type='hidden' name='student_id' value=$student_id>";
+                            echo "</td>";
+
                         echo "</form>";
                         echo "</td>";
                     echo "</tr>";

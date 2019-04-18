@@ -11,19 +11,41 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 ?>
 
 <?php
-    if( isset( $_REQUEST['test'] ))
+    if( isset( $_REQUEST['accept'] ))
     {
         $student_id = $_REQUEST['student_id'];
-        $grade = $_REQUEST['grade'];
         $offering_id = $_COOKIE['offering_id'];
-        $sql = "Update Enrollment set grade=$grade where Roll_Number=$student_id and Offering_ID=$offering_id";
+        $course_type = $_REQUEST['course_type'];
+        $sql = "Insert into Enrollment values($student_id, $offering_id, NULL, '$course_type')";
         if(mysqli_query($link, $sql)){
-        	echo "Grade Successfully submitted for ", $student_id;
+        	echo "Course Accepted successfully", $student_id;
+        	$sql2 = "Delete from Course_Bucket where Student_ID=$student_id and Offering_ID=$offering_id";
+        	if(mysqli_query($link, $sql2)){
+	        	echo "Done";
+	        	header("location: faculty_pending_request.php");
+	        }
+	        else{
+	        	echo "There is some error" . mysqli_error($link);
+	        }
+
         }
         else{
-        	echo "Could not submit grade" . mysqli_error($link);
+        	echo "Can't accept request" . mysqli_error($link);
         }
         
+    }
+    if( isset( $_REQUEST['reject'] ))
+    {
+        $student_id = $_REQUEST['student_id'];
+        $offering_id = $_COOKIE['offering_id'];
+        $sql = "Delete from Course_Bucket where Student_ID=$student_id and Offering_ID=$offering_id";
+        if(mysqli_query($link, $sql)){
+        	echo "Request rejected ", $student_id;
+        	 header("location: faculty_pending_request.php");
+        }
+        else{
+        	echo "No such request exist" . mysqli_error($link);
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -38,7 +60,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-inverse">
       <div class="container-fluid">
       <div class="navbar-header">
           <a class="navbar-brand" href="#">University Management</a>
@@ -49,27 +71,40 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
       </div>
     </nav>
     <div class="wrapper">
-    <h1> TAs in this Course</h1><br>
+    <h1> Accept/Reject course request</h1><br>
     <?php
-        $offering_id = $_GET['offering_id'];
-        $sql = "Select * from TA_Ship where Offering_ID=$offering_id";
+        $offering_id = $_COOKIE['offering_id'];
+        $sql = "Select * from Course_Bucket where Offering_ID=$offering_id";
         if($result = mysqli_query($link, $sql)){
             if(mysqli_num_rows($result) > 0){
                 echo "<table class ='table table-hover'>";
                 echo "<tr>";
                     echo "<th class = 'text-center'>Roll Number </th>";
                     echo "<th class = 'text-center'>Name </th>";
+                    echo "<th class = 'text-center'> Requested As </th>";
+                    echo "<th class = 'text-center'> Accept/Reject </th>";
                 echo "</tr>";
                 while($row = mysqli_fetch_array($result)){
-                    $roll_number = $row['Roll_Number'];
-                    $sql2 = "Select Name from Student where Roll_Number=$roll_number order by Roll_Number";
+                    $roll_number = $row['Student_ID'];
+                    $course_type = $row['Course_Type'];
+                    $sql2 = "Select Name from Student where Roll_Number=$roll_number";
                     $result_student = mysqli_query($link, $sql2);
                     $row_student = mysqli_fetch_array($result_student);
                     $name = $row_student['Name'];
+                    echo "<form method='post'";
                     echo "<tr>";
                         echo "<td class = 'text-center'>" . $roll_number. "</td>";
                         echo "<td class = 'text-center'>" . $name . "</td>";
+                        echo "<td class = 'text-center'>" . $course_type . "</td>";
+                        echo "<td class = 'text-center'>";
+                            echo "<input type='submit', class = 'btn btn-success', name='accept' value='Accept'/>";
+                            echo "  ";
+                            echo "<input type='submit', class = 'btn btn-danger', name='reject' value='Reject'/>";
+                            echo "<input type='hidden' name='student_id' value=$roll_number>";
+                            echo "<input type='hidden' name='course_type' value=$course_type>";
+                            echo "</td>";
                     echo "</tr>";
+                    echo "</form>";
                 }
                 // Free result set
                 mysqli_free_result($result);

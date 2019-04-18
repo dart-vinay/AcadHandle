@@ -18,33 +18,28 @@
     </nav>
     <div class = "container">
         <?php
-        $name = $id = $dept = $desig = "";
-        $row['name'] = "";  
-        $row['id'] = ""; 
-        $row['dept'] = "";
-        $row['desig'] = ""; 
+        $name = $id = "";
+        $row['Prog_Name'] = "";  
+        $row['Prog_ID'] = "";  
         require_once('config.php');
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
-        $sql = "SELECT * FROM Faculty ";
+        $sql = "SELECT * FROM Program ";
         if($result = mysqli_query($link, $sql)){
             if(mysqli_num_rows($result) > 0){
                 echo "<table class='table table-stripped'>";
                     echo "<tr>";
-                        echo "<th class ='text-center'>Name</th>";
-                        echo "<th class ='text-center'>Department</th>";
-                        echo "<th class ='text-center'>Designation</th>";
+                        echo "<th class ='text-center'>Program Code</th>";
+                        echo "<th class ='text-center'>Program Name</th>";
                     echo "</tr>";
                 while($row = mysqli_fetch_array($result)){
                     // echo gettype($row);
-                    $name = $row['Name'];
-                    $dept = $row['Dept_ID'];
-                    $desig = $row['Designation'];
+                    $id = $row['Prog_ID'];
+                    $name = $row['Prog_Name'];
                     echo "<tr>";
+                        echo "<td>" . $id . "</td>";
                         echo "<td>" . $name . "</td>";
-                        echo "<td>" . $dept . "</td>";
-                        echo "<td>" . $desig . "</td>";
                     echo "</tr>";
                 }
                 // echo "</table>";

@@ -20,14 +20,23 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#">University Management</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+        <li><a href="reset-password.php">Reset Password</a></li>
+        <li><a href="logout.php">Sign Out</a></li>
+        </ul>
+      </div>
+    </nav>
     <div class="page-header">
         <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
     </div>
-    <p>
-        <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
-    </p>
     <p>Want to request courses <a href="student_course_request.php">Click here</a>.</p>
     <p>Want to access library <a href="library.php">Click here</a>.</p>
+    <p>Want to drop a course <a href="student_course_drop.php">Click here</a>.</p>
+    <p>See Progress? <a href="progress_report.php">Click here</a>.</p>
 </body>
 </html>

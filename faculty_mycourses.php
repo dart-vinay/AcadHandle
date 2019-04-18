@@ -15,8 +15,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
         header("location: assign_grade.php");
         
     }
+    if( isset( $_REQUEST['accept/reject'] ))
+    {
+        setcookie('offering_id', $_REQUEST['offering_id']);
+        echo $_COOKIE['offering_id'];
+        header("location: faculty_pending_request.php");
+        
+    }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,6 +36,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#">University Management</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+        <li><a href="logout.php">Sign Out</a></li>
+        </ul>
+      </div>
+    </nav>
     <div class="wrapper">
     <h1> My courses this Semester</h1><br>
     <?php
@@ -45,6 +61,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                     echo "<th class = 'text-center'>TA List </th>";
                     echo "<th class = 'text-center'> Assign Grades </th>";
                     echo "<th class = 'text-center'> Add TAs </th>";
+                    echo "<th class = 'text-center'> View Pending Requests </th>";
                 echo "</tr>";
                 while($row = mysqli_fetch_array($result)){
                     $course_code = $row['Course_No'];
@@ -61,6 +78,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                             echo "<input type='hidden' name='offering_id' value=$offering_id>";
                         echo "</form>";
                         echo "<td class = 'text-center'>" , "<a href='add_ta.php?offering_id=$offering_id'>Click Here</a>", "</td>";
+                        echo "<td class = 'text-center'>","<form method='post'>";
+                            echo "<input type='submit', class = 'btn', name='accept/reject' value = 'Click here'/>";
+                            echo "<input type='hidden' name='offering_id' value=$offering_id>";
+                        echo "</form>";
                         echo "</td>";
                     echo "</tr>";
                 }

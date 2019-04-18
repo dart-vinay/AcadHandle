@@ -38,6 +38,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#">University Management</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+        <li><a href="logout.php">Sign Out</a></li>
+        </ul>
+      </div>
+    </nav>
     <div class="wrapper">
     <h1> Assign the grades for</h1><br>
     <?php

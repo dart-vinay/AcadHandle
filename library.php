@@ -13,6 +13,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#">University Management</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+        <li><a href="logout.php">Sign Out</a></li>
+        </ul>
+      </div>
+    </nav>
     <meta charset="UTF-8">
     <title>Library</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">

@@ -9,6 +9,13 @@
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#">University Management</a>
+        </div>
+      </div>
+    </nav>
     <div class = "container">
         <?php
             $coursename = $coursecode = $dept = $credits = "";
