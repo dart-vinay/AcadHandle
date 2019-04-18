@@ -5,63 +5,72 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 // Define variables and initialize with empty values
-$name = $id = "";
-$name_err = $id_err = "";
+$name = $desig = $desc = "";
+$name_err = $desig_err = $desc_err = "";
 
 // Initialize the session
 session_start();
  
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["logged_in_as"]=="Student" || $_SESSION["logged_in_as"] == "Faculty"){
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["logged_in_as"]=="System_Admin"){
     header("location: index.php");
     exit;
 }
 else{
     // Processing form data when form is submitted
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
+    // if($_SERVER["REQUEST_METHOD"] == "POST"){
      
-        // Validate roll number
-        if(empty(trim($_POST["id"]))){
-            $id_err = "Please enter the Department ID.";
-        } else{
-            // Prepare a select statement
-            $sql = "SELECT Dept_ID FROM Department WHERE Dept_ID = ?";
+    //     // Validate roll number
+    //     if(empty(trim($_POST["id"]))){
+    //         $id_err = "Please enter the Department ID.";
+    //     } else{
+    //         // Prepare a select statement
+    //         $sql = "SELECT Dept_ID FROM Department WHERE Dept_ID = ?";
             
-            if($stmt = mysqli_prepare($link, $sql)){
-                // Bind variables to the prepared statement as parameters
-                mysqli_stmt_bind_param($stmt, "s", $param_id);
+    //         if($stmt = mysqli_prepare($link, $sql)){
+    //             // Bind variables to the prepared statement as parameters
+    //             mysqli_stmt_bind_param($stmt, "s", $param_id);
                 
-                // Set parameters
-                $param_id = trim($_POST["id"]);
+    //             // Set parameters
+    //             $param_id = trim($_POST["id"]);
                 
-                // Attempt to execute the prepared statement
-                if(mysqli_stmt_execute($stmt)){
-                    /* store result */
-                    // mysqli_stmt_store_result($stmt);
-                    mysqli_stmt_store_result($stmt);
-                    if(mysqli_stmt_num_rows($stmt) == 1){
-                        $id_err = "This Department already exists in the database";
-                    } else{
-                        $id = trim($_POST["id"]);
-                    }
-                } else{
-                    echo "Oops! Something went wrong. Please try again later.";
-                }
-            }
-            // Close statement
-            mysqli_stmt_close($stmt);
-        }
+    //             // Attempt to execute the prepared statement
+    //             if(mysqli_stmt_execute($stmt)){
+    //                 /* store result */
+    //                 // mysqli_stmt_store_result($stmt);
+    //                 mysqli_stmt_store_result($stmt);
+    //                 if(mysqli_stmt_num_rows($stmt) == 1){
+    //                     $id_err = "This Department already exists in the database";
+    //                 } else{
+    //                     $id = trim($_POST["id"]);
+    //                 }
+    //             } else{
+    //                 echo "Oops! Something went wrong. Please try again later.";
+    //             }
+    //         }
+    //         // Close statement
+    //         mysqli_stmt_close($stmt);
+    //     }
         
         if(empty(trim($_POST["name"]))){
-            $name_err = "Please enter the Department name.";
+            $name_err = "Please enter your name.";
         } else{
             $name = trim($_POST["name"]);
         }
-
+        if(empty(trim($_POST["desig"]))){
+            $desig_err = "Please enter your Designation.";
+        } else{
+            $desig = trim($_POST["desig"]);
+        }
+        if(empty(trim($_POST["desc"]))){
+            $desc_err = "Please enter Complaint Description.";
+        } else{
+            $desc = trim($_POST["desc"]);
+        }
         if(empty($name_err) && empty($id_err)){
             
             // Prepare an insert statement
-            $sql = "INSERT INTO Department (Dept_ID, Dept_Name) VALUES (?, ?)";
+            $sql = "INSERT INTO Complaint (Dept_ID, Dept_Name) VALUES (?, ?)";
             // if(mysqli_prepare($link, $sql)){
             //         header("location: index.php");
             // } else{

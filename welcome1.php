@@ -28,5 +28,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
         <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
     </p>
     <p>Want to request courses <a href="student_course_request.php">Click here</a>.</p>
+    <p> <a href="my_complaints.php">My Complaints</a> </p>
+    <!-- <p>To view previous complaints <a href="my_complaints.php">Click here</a>.</p> -->
 </body>
 </html>
