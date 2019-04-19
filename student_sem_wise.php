@@ -49,11 +49,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
       </div>
     </nav>
     <div class="wrapper">
-    <h1> Courses this Semester</h1><br>
+    <h1> Courses taken till now</h1><br>
     <?php
         // $sem_id = 1;
         $roll_number = $_SESSION["username"];
-        $sql = "SELECT * FROM Enrollment, Offering, Course WHERE Enrollment.Offering_ID = Offering.Offering_ID and Offering.Course_ID = Course.Course_No and Enrollment.Roll_Number = $roll_number ";
+        $sql = "SELECT * FROM Enrollment, Offering, Course WHERE Enrollment.Offering_ID = Offering.Offering_ID and Offering.Course_ID = Course.Course_No and Enrollment.Roll_Number = $roll_number order by Sem_ID desc";
         if($result = mysqli_query($link, $sql)){
             if(mysqli_num_rows($result) > 0){
 
