@@ -23,7 +23,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
       <div class="navbar-header">
-          <a class="navbar-brand" href="#">University Management</a>
+          <a class="navbar-brand" href="index.php">University Management</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
         <li><a href="reset-password.php">Reset Password</a></li>
@@ -41,5 +41,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     <p>Add a new Course <a href="add_course.php">Click here</a>.</p>
     <p>Add a new Staff member <a href="add_staff.php">Here</a>.</p>
     <p>Add a new Offering <a href="addoffering.php">Here</a>.</p>
+    <p>Add a new Semester <a href="add_semester.php">Here</a>.</p>
 </body>
 </html>
