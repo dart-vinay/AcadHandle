@@ -41,7 +41,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
       <div class="navbar-header">
-          <a class="navbar-brand" href="#">University Management</a>
+          <a class="navbar-brand" href="index.php">University Management</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
         <li><a href="logout.php">Sign Out</a></li>
@@ -49,11 +49,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
       </div>
     </nav>
     <div class="wrapper">
-    <h1> Courses this Semester</h1><br>
+    <h1> Courses taken till now</h1><br>
     <?php
         // $sem_id = 1;
         $roll_number = $_SESSION["username"];
-        $sql = "SELECT * FROM Enrollment, Offering, Course WHERE Enrollment.Offering_ID = Offering.Offering_ID and Offering.Course_ID = Course.Course_No and Enrollment.Roll_Number = $roll_number ";
+        $sql = "SELECT * FROM Enrollment, Offering, Course WHERE Enrollment.Offering_ID = Offering.Offering_ID and Offering.Course_ID = Course.Course_No and Enrollment.Roll_Number = $roll_number order by Sem_ID desc";
         if($result = mysqli_query($link, $sql)){
             if(mysqli_num_rows($result) > 0){
 

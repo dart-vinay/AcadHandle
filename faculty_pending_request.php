@@ -63,7 +63,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 	<nav class="navbar navbar-inverse">
       <div class="container-fluid">
       <div class="navbar-header">
-          <a class="navbar-brand" href="#">University Management</a>
+          <a class="navbar-brand" href="index.php">University Management</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
         <li><a href="logout.php">Sign Out</a></li>
@@ -83,6 +83,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                     echo "<th class = 'text-center'>Name </th>";
                     echo "<th class = 'text-center'> Requested As </th>";
                     echo "<th class = 'text-center'> Accept/Reject </th>";
+                    echo "<th class = 'text-center'> View Student Transcript </th>";
                 echo "</tr>";
                 while($row = mysqli_fetch_array($result)){
                     $roll_number = $row['Student_ID'];
@@ -102,7 +103,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                             echo "<input type='submit', class = 'btn btn-danger', name='reject' value='Reject'/>";
                             echo "<input type='hidden' name='student_id' value=$roll_number>";
                             echo "<input type='hidden' name='course_type' value=$course_type>";
-                            echo "</td>";
+                        echo "</td>";
+                        echo "<td class = 'text-center'>", "<a href='progress_report2.php?roll_number=$roll_number'>View</a>", "</td>";
                     echo "</tr>";
                     echo "</form>";
                 }

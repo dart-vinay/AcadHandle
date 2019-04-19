@@ -41,12 +41,12 @@ function check($credits, $type){
 
 }
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["logged_in_as"]=="System_Admin" || $_SESSION["logged_in_as"]=="Faculty"){
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["logged_in_as"]=="System_Admin" || $_SESSION["logged_in_as"]=="Student"){
     header("location: index.php");
     exit;
 }
 else{
-    $roll_number= $_SESSION['username'];
+    $roll_number= $_GET['roll_number'];
     $sql = "Select Course_Type, sum(Credits) from Enrollment, Offering, Course where Grade is NOT NULL and Roll_Number = $roll_number and Offering.Offering_ID= Enrollment.Offering_ID and Offering.Course_ID=Course.Course_No group by Course_Type";
     if($result = mysqli_query($link, $sql)){
         if(mysqli_num_rows($result) > 0){
