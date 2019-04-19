@@ -39,6 +39,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     <p>Want to drop a course <a href="student_course_drop.php">Click here</a>.</p>
     <p>See Progress? <a href="progress_report.php">Click here</a>.</p>
     <p>See all the courses taken <a href="student_sem_wise.php">Click here</a>.</p>
+    <p> <a href="reg_status.php">Registration Status</a> </p>
     <p> <a href="my_complaints.php">My Complaints</a> </p>
+
 </body>
 </html>
