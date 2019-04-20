@@ -84,7 +84,7 @@ else{
                 <label>Enter Book ID</label>
                 <input type="text" name="book" class="form-control" value="<?php echo $book; ?>">
                 <span class="help-block"><?php echo $book_err; ?></span>
-            </div>
+            </div>  
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit">
                 <input type="reset" class="btn btn-default" value="Reset">

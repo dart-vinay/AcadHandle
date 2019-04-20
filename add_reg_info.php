@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 // Define variables and initialize with empty values
-$roll_number = $fee_status ="";
+$roll_number = $fee_status = $comments="";
 $roll_err = $fee_err = "";
  
 
@@ -35,7 +35,7 @@ else{
                         echo "<script> alert('Registration Details Updated.');</script>";
                         header("add_reg_info.php");
                     }else{
-                        echo "heck".mysqli_error($link);
+                        echo "hecka".mysqli_error($link);
                     }
                 }
 
@@ -44,17 +44,17 @@ else{
                 $sql = "Select sum(Credits) from Enrollment, Offering, Course where Roll_Number = $roll_number and Offering.Offering_ID= Enrollment.Offering_ID and Offering.Course_ID=Course.Course_No and Offering.Sem_ID=$sem_id";
                 if($result = mysqli_query($link, $sql)){
                     $row = mysqli_fetch_array($result);
-                    $credits = $row['sum(Credits)'];
+                    $credits = (int)$row['sum(Credits)'];
                     $roll_number = trim($_POST['roll_number']);
                     $fee_status  = trim($_POST['fee_status']);
                     $SPI = 0;
-                    $Comments = "asg";
-                    $sql = "INSERT INTO Registration VALUES ($roll_number, $sem_id, $credits, $SPI, $fee_status, $Comments)";
-                    if($result = mysqli_query($link, $sql)){
+                    $comments = trim($_POST['comments']);
+                    $sql1 = "INSERT INTO Registration VALUES ($roll_number, $sem_id, $credits, $SPI, $fee_status, '$comments')";
+                    if($result = mysqli_query($link, $sql1)){
                         echo "<script> alert('Registration Details Updated.');</script>";
-                        header("add_reg_info.php");
+                        header("location: index.php");
                     }else{
-                        echo "heck".mysqli_error($link);
+                        echo "hefdck".mysqli_error($link);
                     }
 
                 }
@@ -178,7 +178,7 @@ else{
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
       <div class="navbar-header">
-          <a class="navbar-brand" href="#">University Management</a>
+          <a class="navbar-brand" href="index.php">University Management</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
         <li><a href="logout.php">Sign Out</a></li>
@@ -190,19 +190,20 @@ else{
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
                 <label>Roll Number</label>
-                <input type="text" name="roll_number" class="form-control" value="">
+                <input type="text" name="roll_number" class="form-control" value="<?php echo $roll_number; ?>">
                 <span class="help-block"><?php echo $roll_err; ?></span>
             </div>
             <div class="form-group">
                 <label>Fee Status</label>
-                <select name = "fee_status" class="form-control" value="">
+                <select name = "fee_status" class="form-control" value="<?php echo $fee_status
+                ; ?>">
                     <option value="0">Pending</option>
                     <option value="1">Paid</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Comments</label>
-                <input type="text" name="comments" class="form-control" value="">
+                <input type="text" name="comments" class="form-control" value="<?php echo $comments; ?>">
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit">

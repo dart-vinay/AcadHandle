@@ -42,5 +42,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     <p>Add a new Staff member <a href="add_staff.php">Here</a>.</p>
     <p>Add a new Offering <a href="addoffering.php">Here</a>.</p>
     <p>Add a new Semester <a href="add_semester.php">Here</a>.</p>
+    <p>Add student registration details <a href="add_reg_info.php">Here</a>.</p>
 </body>
 </html>
