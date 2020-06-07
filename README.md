@@ -1,2 +1,2 @@
-# University-Management
+# AcadHandle
 CS315 Project
